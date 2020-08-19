@@ -50,6 +50,8 @@ ext {
     idleResourceVersion = '3.2.0'
 
     mockitoVersion = '3.1.0'
+    roomVersion = '2.2.3'
+    pagingVersion = '2.1.2'
 
 
 }

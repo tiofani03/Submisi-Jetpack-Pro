@@ -1,9 +1,11 @@
 package com.tiooooo.mymovie.ui.detail;
 
 import com.tiooooo.mymovie.data.DataRepository;
-import com.tiooooo.mymovie.data.source.MovieResponse;
-import com.tiooooo.mymovie.data.source.TvSeriesResponse;
+import com.tiooooo.mymovie.data.local.entitiy.Movie;
+import com.tiooooo.mymovie.data.local.entitiy.TvSeries;
+import com.tiooooo.mymovie.data.rest.response.TvSeriesResponse;
 import com.tiooooo.mymovie.utils.FakeDataDummy;
+import com.tiooooo.mymovie.vo.Resource;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,17 +18,16 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DetailViewModelTest {
     private DetailViewModel viewModel;
-    private MovieResponse dummyMovie = FakeDataDummy.generateDummyMovies().get(0);
+    private Movie dummyMovie = FakeDataDummy.generateDummyMovies().get(0);
     private TvSeriesResponse dummyTvSeries =FakeDataDummy.generateDummyTvSeries().get(0);
-    private int movieID = dummyMovie.getId();
-    private int tvSeriesID = dummyTvSeries.getId();
+    private String movieID = dummyMovie.getId();
+    private String tvSeriesID = dummyTvSeries.getId();
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -35,10 +36,10 @@ public class DetailViewModelTest {
     private DataRepository dataRepository;
 
     @Mock
-    private Observer<MovieResponse> movieObserver;
+    private Observer<Resource<Movie>> movieObserver;
 
     @Mock
-    private Observer<TvSeriesResponse> tvSeriesObserver;
+    private Observer<Resource<TvSeries>> tvSeriesObserver;
 
     @Before
     public void setUp(){
@@ -48,40 +49,30 @@ public class DetailViewModelTest {
     @Test
     public void getMovieDetails(){
         viewModel.setId(movieID);
-        MutableLiveData<MovieResponse> movies = new MutableLiveData<>();
-        movies.setValue(dummyMovie);
-        when(dataRepository.getMovieDetail(movieID)).thenReturn(movies);
-        MovieResponse movie = viewModel.getMovieDetails().getValue();
-        verify(dataRepository).getMovieDetail(movieID);
-        assertNotNull(movie);
-        assertEquals(dummyMovie.getId(),movie.getId());
-        assertEquals(dummyMovie.getTitle(),movie.getTitle());
-        assertEquals(dummyMovie.getVote_count(),movie.getVote_count());
-        assertEquals(dummyMovie.getDesc(),movie.getDesc());
-        assertEquals(dummyMovie.getPopularity(),movie.getPopularity());
+        Resource<Movie> dummyCourseWithModule = Resource.success(FakeDataDummy.generateDummyMovie());
+        MutableLiveData<Resource<Movie>> course = new MutableLiveData<>();
+        course.setValue(dummyCourseWithModule);
 
-        viewModel.getMovieDetails().observeForever(movieObserver);
-        movieObserver.onChanged(dummyMovie);
+        when(dataRepository.getMovieDetail(movieID)).thenReturn(course);
+
+        viewModel.movieDetail.observeForever(movieObserver);
+
+        verify(movieObserver).onChanged(dummyCourseWithModule);
     }
 
     @Test
     public void getTvSeriesDetail(){
         viewModel.setId(tvSeriesID);
-        MutableLiveData<TvSeriesResponse> tvSeriesResponse = new MutableLiveData<>();
-        tvSeriesResponse.setValue(dummyTvSeries);
-        when(dataRepository.getTvSeriesDetail(tvSeriesID)).thenReturn(tvSeriesResponse);
-        TvSeriesResponse tvSeries = viewModel.getTvSeriesDetails().getValue();
-        assertNotNull(tvSeries);
-        assertEquals(dummyTvSeries.getId(),tvSeries.getId());
-        assertEquals(dummyTvSeries.getName(),tvSeries.getName());
-        assertEquals(dummyTvSeries.getVote_count(),tvSeries.getVote_count());
-        assertEquals(dummyTvSeries.getDesc(),tvSeries.getDesc());
-        assertEquals(dummyTvSeries.getPopularity(),tvSeries.getPopularity());
+        Resource<TvSeries> dummyCourseWithModule = Resource.success(FakeDataDummy.generateDummyTv());
+        MutableLiveData<Resource<TvSeries>> course = new MutableLiveData<>();
+        course.setValue(dummyCourseWithModule);
 
-        viewModel.getTvSeriesDetails().observeForever(tvSeriesObserver);
-        tvSeriesObserver.onChanged(dummyTvSeries);
+        when(dataRepository.getTvSeriesDetail(tvSeriesID)).thenReturn(course);
+
+        viewModel.tvDetail.observeForever(tvSeriesObserver);
+
+        verify(tvSeriesObserver).onChanged(dummyCourseWithModule);
 
     }
-
 
 }

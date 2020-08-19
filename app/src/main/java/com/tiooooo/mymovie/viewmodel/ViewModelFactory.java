@@ -1,13 +1,14 @@
 package com.tiooooo.mymovie.viewmodel;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.tiooooo.mymovie.data.DataRepository;
 import com.tiooooo.mymovie.di.Injection;
 import com.tiooooo.mymovie.ui.detail.DetailViewModel;
-import com.tiooooo.mymovie.ui.main.fragment.movie.MovieViewModel;
-import com.tiooooo.mymovie.ui.main.fragment.tv.TvSeriesViewModel;
+import com.tiooooo.mymovie.ui.favorite.movie.MovieFavoriteViewModel;
+import com.tiooooo.mymovie.ui.favorite.tv.TvSeriesFavoriteViewModel;
+import com.tiooooo.mymovie.ui.main.movie.MovieViewModel;
+import com.tiooooo.mymovie.ui.main.tv.TvSeriesViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -22,7 +23,7 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
         this.dataRepository = academyRepository;
     }
 
-    public static ViewModelFactory getInstance(Context context){
+    public static ViewModelFactory getInstance(Application context){
         if(INSTANCE == null){
             synchronized (ViewModelFactory.class){
                 if(INSTANCE == null){
@@ -43,6 +44,10 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new TvSeriesViewModel(dataRepository);
         }else if(modelClass.isAssignableFrom(DetailViewModel.class)){
             return (T) new DetailViewModel(dataRepository);
+        }else if(modelClass.isAssignableFrom(MovieFavoriteViewModel.class)){
+            return (T) new MovieFavoriteViewModel(dataRepository);
+        }else if(modelClass.isAssignableFrom(TvSeriesFavoriteViewModel.class)){
+            return (T) new TvSeriesFavoriteViewModel(dataRepository);
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());

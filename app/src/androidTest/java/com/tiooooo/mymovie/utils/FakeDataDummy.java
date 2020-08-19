@@ -1,7 +1,7 @@
 package com.tiooooo.mymovie.utils;
 
-import com.tiooooo.mymovie.data.source.MovieResponse;
-import com.tiooooo.mymovie.data.source.TvSeriesResponse;
+import com.tiooooo.mymovie.data.rest.response.MovieResponse;
+import com.tiooooo.mymovie.data.rest.response.TvSeriesResponse;
 
 import java.util.ArrayList;
 
@@ -11,14 +11,14 @@ public class FakeDataDummy {
         ArrayList<MovieResponse> movies = new ArrayList<>();
 
         movies.add(new MovieResponse(
-                419704,
-                "Ad Astra",
-                "/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg",
-                "3427",
-                6.0,
-                "The near future, a time when both hope and hardships drive humanity to look to the stars and beyond. While a mysterious phenomenon menaces to destroy life on planet Earth, astronaut Roy McBride undertakes a mission across the immensity of space and its many perils to uncover the truth about a lost expedition that decades before boldly faced emptiness and silence in search of the unknown.",
-                "2019-09-17",
-                355.229
+                "554993",
+                "Britt-Marie Was Here",
+                "/1Duc3EBiegywczxTWekvy03HWai.jpg",
+                "12",
+                5.4,
+                "Britt-Marie, a woman in her sixties, decides to leave her husband and start anew. Having been housewife for most of her life and and living in small backwater town of Borg, there isn't many jobs available and soon she finds herself fending a youth football team.",
+                "2019-01-25",
+                351.307
         ));
         return movies;
     }
@@ -28,7 +28,7 @@ public class FakeDataDummy {
         ArrayList<TvSeriesResponse> tvSeries = new ArrayList<>();
 
         tvSeries.add(new TvSeriesResponse(
-                60735,
+                "60735",
                 "The Flash",
                 "/wHa6KOJAoNTFLFtp7wguUJKSnju.jpg",
                 "4442",

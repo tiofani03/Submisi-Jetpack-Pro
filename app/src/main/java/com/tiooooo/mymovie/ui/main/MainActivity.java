@@ -1,47 +1,33 @@
 package com.tiooooo.mymovie.ui.main;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import android.os.Bundle;
 
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.tiooooo.mymovie.R;
-import com.tiooooo.mymovie.ui.main.fragment.movie.FragmentMovies;
-import com.tiooooo.mymovie.ui.main.fragment.tv.FragmentTvSeries;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
-
-
-    @BindView(R.id.smart_tab_layout)
-    SmartTabLayout smartTabLayout;
-    @BindView(R.id.viewpager)
-    ViewPager viewPager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_movies, R.id.navigation_tv_series, R.id.navigation_favorites)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navView, navController);
 
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add(R.string.movie, FragmentMovies.class)
-                .add(R.string.tv_series, FragmentTvSeries.class)
-                .create()
-        );
-
-        viewPager.setAdapter(adapter);
-        smartTabLayout.setViewPager(viewPager);
-
-        if(getSupportActionBar() != null){
-            getSupportActionBar().setElevation(0);
-        }
+        getSupportActionBar().hide();
 
     }
 }
