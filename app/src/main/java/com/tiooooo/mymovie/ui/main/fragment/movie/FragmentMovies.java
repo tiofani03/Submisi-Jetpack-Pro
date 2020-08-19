@@ -8,7 +8,8 @@ import android.widget.TextView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.tiooooo.mymovie.R;
-import com.tiooooo.mymovie.entity.movie.Movie;
+import com.tiooooo.mymovie.viewmodel.ViewModelFactory;
+import com.tiooooo.mymovie.data.source.MovieResponse;
 
 import java.util.ArrayList;
 
@@ -50,6 +51,7 @@ public class FragmentMovies extends Fragment {
         ButterKnife.bind(this, view);
         if (getActivity() != null) {
             initAdapter();
+            showLoading(true);
             getMovies();
         }
     }
@@ -63,7 +65,9 @@ public class FragmentMovies extends Fragment {
     private void showLoading(Boolean state) {
         if (state) {
             shimmerFrameLayout.setVisibility(View.VISIBLE);
+            shimmerFrameLayout.startShimmer();
         } else {
+            shimmerFrameLayout.stopShimmer();
             shimmerFrameLayout.setVisibility(View.GONE);
         }
     }
@@ -71,11 +75,16 @@ public class FragmentMovies extends Fragment {
 
     private void getMovies() {
         showLoading(true);
-        MovieViewModel viewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(MovieViewModel.class);
-        ArrayList<Movie> movies = viewModel.getMovies();
-        adapter.setMovies(movies);
-        rvMovies.setAdapter(adapter);
-        showLoading(false);
+        ViewModelFactory factory = ViewModelFactory.getInstance(getActivity());
+        MovieViewModel viewModel = new ViewModelProvider(this, factory).get(MovieViewModel.class);
+        viewModel.getMovies().observe(getViewLifecycleOwner(),movies -> {
+            showLoading(false);
+            adapter.setMovies((ArrayList<MovieResponse>) movies);
+            rvMovies.setAdapter(adapter);
+
+        });
+
+
     }
 
 }

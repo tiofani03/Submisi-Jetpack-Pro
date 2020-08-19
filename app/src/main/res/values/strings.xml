@@ -6,21 +6,12 @@
     <string name="rating">9,3</string>
     <string name="popularity">Popularity</string>
     <string name="vote_count">Votes</string>
-    <string name="director">Directors</string>
-    <string name="desc">Avengers: Endgame dimulai tepat saat Thanos menjentikan jarinya, menghabisi setengah penduduk bumi. Hawkeye yang absen dalam Avengers: Infinity War, muncul paling awal dalam film ini.</string>
     <string name="title">Avengers:  \nEndgame</string>
     <string name="type_detail">Action, Adventure, Drama</string>
-    <string name="hour_detail">3 Hour 1 min</string>
     <string name="director_detail">Anthony Russo, Joe Russo</string>
-    <string name="image_list">Image List</string>
     <string name="image_detail">Image Detail</string>
-    <string name="change_language_settings">Change language setting</string>
-    <string name="episodes">Episodes</string>
-    <string name="language_code">en-US</string>
     <string name="release_date">Release Date</string>
     <string name="item_list_movie">Item list Movie</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="month">
         <item>January</item>
@@ -37,28 +28,9 @@
         <item>December</item>
     </string-array>
 
-    <string name="title_favorite">My Favorite</string>
-    <string name="title_favorite_movie">My Favorite Movie</string>
-    <string name="title_favorite_tv_series">My Favorite Tv Series</string>
-    <string name="title_activity_favorite">FavoriteActivity</string>
     <string name="you_haven_t_added_a_favorite_movie_yet">You haven\'t added a favorite movie yet</string>
     <string name="you_haven_t_added_a_favorite_tv_yet">You haven\'t added a favorite TV series yet</string>
-    <string name="success_add_favorite">Successfully added to my favorites</string>
-    <string name="success_delete_favorite">successfully deleted from my favorites</string>
-    <string name="search">search…</string>
-    <string name="no_internet">Check your connection and try again</string>
-    <string name="data_not_found">no data found</string>
     <string name="no_desc">There is no description in this language</string>
-    <string name="setting_button">Setting Button</string>
-    <string name="icon_options">icon_options</string>
-    <string name="release_reminder">Release Reminder</string>
-    <string name="daily_reminder">Daily Reminder</string>
-    <string name="setting">Settings</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="empty_text">No Data</string>
-    <string name="release_reminder_message">New Movie release today</string>
-    <string name="daily_message_reminder">This is movie for you</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -149,5 +121,4 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="action_settings">Settings</string>
 </resources>

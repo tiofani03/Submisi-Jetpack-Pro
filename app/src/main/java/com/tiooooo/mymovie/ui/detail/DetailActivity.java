@@ -2,23 +2,27 @@ package com.tiooooo.mymovie.ui.detail;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.tiooooo.mymovie.R;
-import com.tiooooo.mymovie.entity.movie.Movie;
-import com.tiooooo.mymovie.entity.tvseries.TvSeries;
+import com.tiooooo.mymovie.data.source.MovieResponse;
+import com.tiooooo.mymovie.data.source.TvSeriesResponse;
+import com.tiooooo.mymovie.viewmodel.ViewModelFactory;
 
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import butterknife.BindView;
@@ -45,6 +49,10 @@ public class DetailActivity extends AppCompatActivity {
     ImageView imgMovie;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.shimmerFrameLayout)
+    ShimmerFrameLayout shimmerFrameLayout;
+    @BindView(R.id.constraint_detail)
+    ConstraintLayout constraintLayout;
 
 
     @Override
@@ -55,23 +63,32 @@ public class DetailActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        DetailViewModel detailViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(DetailViewModel.class);
+
+        ViewModelFactory factory = ViewModelFactory.getInstance(this.getApplication());
+        DetailViewModel detailViewModel = new ViewModelProvider(this, factory).get(DetailViewModel.class);
 
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
             int type = getIntent().getIntExtra(EXTRA_CATEGORY, 0);
-            String id = getIntent().getStringExtra(EXTRA_MOVIE);
+            int id = getIntent().getIntExtra(EXTRA_MOVIE, 0);
+            showLoading(true);
+
             switch (type) {
                 case 1:
                     detailViewModel.setId(id);
-                    Movie movie = detailViewModel.getMovieDetails();
-                    setDataMovie(movie);
+                    detailViewModel.getMovieDetails().observe(this, movieResponse -> {
+                        showLoading(false);
+                        setDataMovie(movieResponse);
+                    });
+
                     break;
 
                 case 2:
                     detailViewModel.setId(id);
-                    TvSeries tvSeries = detailViewModel.getTvSeriesDetails();
-                    setDataTVSeries(tvSeries);
+                    detailViewModel.getTvSeriesDetails().observe(this, tvSeriesResponse -> {
+                        showLoading(false);
+                        setDataTVSeries(tvSeriesResponse);
+                    });
 
                     break;
             }
@@ -111,7 +128,7 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    public String changeFormatDate(String date) {
+    private String changeFormatDate(String date) {
         String[] splitDate = date.split("-");
         String part1 = splitDate[0];
         int part2 = Integer.parseInt(splitDate[1]);
@@ -129,18 +146,16 @@ public class DetailActivity extends AppCompatActivity {
         return part3 + " " + monthConvert + " " + part1;
     }
 
-    private void setDataMovie(Movie movies) {
+    private void setDataMovie(MovieResponse movies) {
         setCollapsing(movies.getTitle());
         String popularity = Double.toString(movies.getPopularity());
         Double rating = movies.getVote_avg() / 2;
         String rate = String.valueOf(rating);
         String date = movies.getRelease_date();
-        if (date.equals("")) {
-            tvRelease.setText(date);
-        } else {
+        if (!date.equals("")) {
             date = changeFormatDate(movies.getRelease_date());
-            tvRelease.setText(date);
         }
+        tvRelease.setText(date);
 
         String img = "https://image.tmdb.org/t/p/w500/" + movies.getImg();
 
@@ -149,8 +164,9 @@ public class DetailActivity extends AppCompatActivity {
 
         Glide.with(this)
                 .load(img)
-                .apply(new RequestOptions().centerCrop())
+                .apply(RequestOptions.placeholderOf(R.drawable.ic_loading).error(R.drawable.ic_error).fitCenter())
                 .into(imgMovie);
+
 
         if (movies.getDesc().equals("")) {
             String desc = getResources().getString(R.string.no_desc);
@@ -163,7 +179,7 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    private void setDataTVSeries(TvSeries tvSeries) {
+    private void setDataTVSeries(TvSeriesResponse tvSeries) {
 
         setCollapsing(tvSeries.getName());
         String popularity = Double.toString(tvSeries.getPopularity());
@@ -175,9 +191,10 @@ public class DetailActivity extends AppCompatActivity {
         tvTitle.setText(tvSeries.getName());
         rbRating.setRating(Float.parseFloat(rate));
 
+
         Glide.with(this)
                 .load(img)
-                .apply(new RequestOptions().centerCrop())
+                .apply(RequestOptions.placeholderOf(R.drawable.ic_loading).error(R.drawable.ic_error).centerCrop())
                 .into(imgMovie);
 
         if (tvSeries.getDesc().equals("")) {
@@ -190,6 +207,18 @@ public class DetailActivity extends AppCompatActivity {
         tvRelease.setText(tvSeries.getFirst_air_date());
         tvPopularity.setText(popularity);
 
+    }
+
+    private void showLoading(Boolean state) {
+        if (state) {
+            constraintLayout.setVisibility(View.GONE);
+            shimmerFrameLayout.setVisibility(View.VISIBLE);
+            shimmerFrameLayout.startShimmer();
+        } else {
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setVisibility(View.GONE);
+            constraintLayout.setVisibility(View.VISIBLE);
+        }
     }
 
 

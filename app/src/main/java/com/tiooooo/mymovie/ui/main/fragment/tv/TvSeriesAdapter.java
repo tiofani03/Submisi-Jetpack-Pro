@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tiooooo.mymovie.BuildConfig;
 import com.tiooooo.mymovie.R;
-import com.tiooooo.mymovie.entity.tvseries.TvSeries;
+import com.tiooooo.mymovie.data.source.TvSeriesResponse;
 import com.tiooooo.mymovie.ui.detail.DetailActivity;
 
 import java.util.ArrayList;
@@ -24,15 +24,15 @@ import butterknife.ButterKnife;
 
 public class TvSeriesAdapter extends RecyclerView.Adapter<TvSeriesAdapter.TvSeriesViewHolder> {
 
-    private ArrayList<TvSeries> listTvSeries = new ArrayList<>();
-    private Context context;
+    private ArrayList<TvSeriesResponse> listTvSeries = new ArrayList<>();
+    private final Context context;
     private static final int EXTRA_CATEGORY = 2;
 
     TvSeriesAdapter(Context context){
         this.context = context;
     }
 
-    void setTvSeries(ArrayList<TvSeries> list){
+    void setTvSeries(ArrayList<TvSeriesResponse> list){
         listTvSeries.clear();
         listTvSeries.addAll(list);
         notifyDataSetChanged();
@@ -76,7 +76,7 @@ public class TvSeriesAdapter extends RecyclerView.Adapter<TvSeriesAdapter.TvSeri
             itemView.setOnClickListener(this);
         }
 
-        void bind(TvSeries tvSeries) {
+        void bind(TvSeriesResponse tvSeries) {
             String ratingTen = Double.toString(tvSeries.getVote_avg());
             Double rating = tvSeries.getVote_avg() / 2;
             String rate = String.valueOf(rating);
@@ -100,7 +100,7 @@ public class TvSeriesAdapter extends RecyclerView.Adapter<TvSeriesAdapter.TvSeri
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            TvSeries tvSeries = listTvSeries.get(position);
+            TvSeriesResponse tvSeries = listTvSeries.get(position);
             Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra(DetailActivity.EXTRA_MOVIE,tvSeries.getId());
             intent.putExtra(DetailActivity.EXTRA_CATEGORY,EXTRA_CATEGORY);

@@ -77,4 +77,12 @@ dependencies {
 
     //facebook shimmer
     implementation 'com.facebook.shimmer:shimmer:0.4.0@aar'
+
+    testImplementation "androidx.arch.core:core-testing:$archLifecycleVersion"
+
+    //IdlingResource
+    implementation "androidx.test.espresso:espresso-idling-resource:$idleResourceVersion"
+
+    //Mockito
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
 }

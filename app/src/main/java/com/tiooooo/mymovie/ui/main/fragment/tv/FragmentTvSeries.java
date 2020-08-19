@@ -8,7 +8,8 @@ import android.widget.TextView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.tiooooo.mymovie.R;
-import com.tiooooo.mymovie.entity.tvseries.TvSeries;
+import com.tiooooo.mymovie.data.source.TvSeriesResponse;
+import com.tiooooo.mymovie.viewmodel.ViewModelFactory;
 
 import java.util.ArrayList;
 
@@ -74,10 +75,12 @@ public class FragmentTvSeries extends Fragment {
 
     private void getTvSeries() {
         showLoading(true);
-        TvViewModel viewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(TvViewModel.class);
-        ArrayList<TvSeries> tvSeries = viewModel.getTvSeries();
-        adapter.setTvSeries(tvSeries);
-        rvTvSeries.setAdapter(adapter);
+        ViewModelFactory factory = ViewModelFactory.getInstance(getActivity());
+        TvSeriesViewModel viewModel = new ViewModelProvider(this, factory).get(TvSeriesViewModel.class);
+        viewModel.getTvSeries().observe(getViewLifecycleOwner(),tvSeries -> {
+            adapter.setTvSeries((ArrayList<TvSeriesResponse>) tvSeries);
+            rvTvSeries.setAdapter(adapter);
+        });
         showLoading(false);
 
     }

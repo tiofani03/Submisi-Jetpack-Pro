@@ -2,6 +2,7 @@ package com.tiooooo.mymovie.ui.main.fragment.movie;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tiooooo.mymovie.BuildConfig;
 import com.tiooooo.mymovie.R;
-import com.tiooooo.mymovie.entity.movie.Movie;
+import com.tiooooo.mymovie.data.source.MovieResponse;
 import com.tiooooo.mymovie.ui.detail.DetailActivity;
 
 import java.util.ArrayList;
@@ -24,15 +25,15 @@ import butterknife.ButterKnife;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private ArrayList<Movie> listMovies = new ArrayList<>();
-    private Context context;
+    private ArrayList<MovieResponse> listMovies = new ArrayList<>();
+    private final Context context;
     private static final int EXTRA_CATEGORY = 1;
 
     MovieAdapter(Context context){
         this.context = context;
     }
 
-    void setMovies(ArrayList<Movie> items){
+    void setMovies(ArrayList<MovieResponse> items){
         listMovies.clear();
         listMovies.addAll(items);
         notifyDataSetChanged();
@@ -78,7 +79,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             itemView.setOnClickListener(this);
         }
 
-        void bind(Movie movies) {
+        void bind(MovieResponse movies) {
 
             String ratingTen = Double.toString(movies.getVote_avg());
             Double rating = movies.getVote_avg()/2;
@@ -112,8 +113,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            Movie movie = listMovies.get(position);
+            MovieResponse movie = listMovies.get(position);
             Intent intent = new Intent(context, DetailActivity.class);
+            Log.d("Coba","Movie ID "+movie.getId());
+
             intent.putExtra(DetailActivity.EXTRA_MOVIE,movie.getId());
             intent.putExtra(DetailActivity.EXTRA_CATEGORY,EXTRA_CATEGORY);
             context.startActivity(intent);

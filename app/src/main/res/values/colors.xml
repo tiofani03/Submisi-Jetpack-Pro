@@ -6,4 +6,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="colorGold">#F7C50E</color>
+    <color name="colorShimmer">#DFDFDF</color>
+    <color name="colorTextTertiary">#EFEFEF</color>
+    <color name="colorDetail">#EEEEEE</color>
 </resources>

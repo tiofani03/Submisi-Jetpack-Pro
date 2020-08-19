@@ -1,14 +1,22 @@
 package com.tiooooo.mymovie.ui.main.fragment.movie;
 
-import com.tiooooo.mymovie.entity.movie.Movie;
-import com.tiooooo.mymovie.utils.DataDummy;
+import com.tiooooo.mymovie.data.DataRepository;
+import com.tiooooo.mymovie.data.source.MovieResponse;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 public class MovieViewModel extends ViewModel {
-    public ArrayList<Movie> getMovies() {
-        return DataDummy.getMovies();
+
+    private DataRepository dataRepository;
+
+    public MovieViewModel(DataRepository dataRepository) {
+        this.dataRepository = dataRepository;
+    }
+
+    public LiveData<List<MovieResponse>> getMovies() {
+        return dataRepository.getMovies();
     }
 }
