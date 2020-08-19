@@ -1,4 +1,4 @@
-# Submisi-Jetpack-Pro
+# Submission 1 Architecture Component
 File submisi pertama kelas Android Jetpack Pro Dicoding
 
 # Kriteria Submission
